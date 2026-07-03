@@ -1,100 +1,121 @@
-:root {
-  /* Brand */
-  --accent: #10b981;       /* emerald */
-  --accent-strong: #059669;
-  --accent-soft: rgba(16, 185, 129, 0.15);
+@import "tailwindcss";
 
-  /* Surfaces (dark-first) */
-  --bg: #0b1015;
-  --bg-elev: #131a22;
-  --bg-elev-2: #1a2330;
-  --border: rgba(255, 255, 255, 0.08);
+@theme {
+  --color-bg: #0a0e14;
+  --color-bg-elevated: #11161f;
+  --color-bg-elevated-hover: #161c28;
+  --color-accent: #2d7dff;
+  --color-accent-solid: #1e66e0;
+  --color-accent-bright: #5b9fff;
+  --color-accent-dim: #1a3a66;
+  --color-text-primary: #e8ebf0;
+  --color-text-secondary: #8c96a8;
+  --color-text-tertiary: #5a6376;
+  --color-success: #3ddc84;
+  --color-border: #1d232e;
+  --color-border-bright: #2a3140;
 
-  /* Text */
-  --text: #e7ecf2;
-  --text-muted: #9aa6b2;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
 
-  /* Type */
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
-    sans-serif;
-  --font-display: "Inter", system-ui, sans-serif;
-
-  /* Layout */
-  --radius: 14px;
-  --radius-sm: 8px;
-  --maxw: 1100px;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 * {
   box-sizing: border-box;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.6;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  background:
-    radial-gradient(1000px 600px at 85% -10%, var(--accent-soft), transparent 60%),
-    radial-gradient(800px 500px at -10% 30%, rgba(16, 185, 129, 0.08), transparent 60%),
-    var(--bg);
-  min-height: 100vh;
-}
-
-a {
-  color: var(--accent);
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-a:hover {
-  color: var(--accent-strong);
-}
-
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin: 0 0 0.6rem;
-}
-
-h1 {
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
-  font-weight: 800;
-}
-h2 {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 700;
-}
-h3 {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-p {
-  margin: 0 0 1rem;
-}
-
-button {
-  font-family: inherit;
-}
-
-img {
-  display: block;
-  max-width: 100%;
 }
 
 ::selection {
-  background: var(--accent);
-  color: #06231a;
+  background-color: var(--color-accent-dim);
+  color: var(--color-text-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* subtle scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-bright);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* route-style section divider, used as a structural device */
+.route-label {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--color-accent-bright);
+}
+
+.route-label::before {
+  content: "// ";
+  color: var(--color-text-tertiary);
+}
+
+.nav-link:hover {
+  color: var(--color-text-primary) !important;
+}
+
+.hover-accent {
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+.hover-accent:hover {
+  color: var(--color-accent-bright) !important;
+  border-color: var(--color-accent) !important;
+}
+
+/* blinking cursor for the status readout */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.status-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(61, 220, 132, 0); }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-out infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fade-up 0.6s ease-out both;
 }
