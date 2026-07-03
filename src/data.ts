@@ -7,14 +7,11 @@ export const profile = {
   tagline: "Microservices · REST APIs · Cloud",
   intro:
     "I'm a Backend Engineer with 3–5 years of experience building scalable microservices and RESTful APIs in C#/.NET Core and Go. I focus on clean server-side architecture, database performance, and shipping reliably in cloud environments like Azure DevOps.",
-  // TODO: replace with your real headshot. Drop a file in /public and update the path.
   photo: "./public/phto.png",
-  // TODO: add a public resume URL or place a PDF at /public/resume.pdf
   resumeUrl: "/resume.pdf",
-  // TODO: confirm contact details
-  email: "malwiazizbusiness@gmail.com", // TODO
-  linkedin: "https://www.linkedin.com/in/muhammadalwiaziz/", // TODO: confirm exact handle
-  github: "https://github.com/kuahbanyak", // TODO: add github username
+  email: "malwiazizbusiness@gmail.com",
+  linkedin: "https://www.linkedin.com/in/muhammadalwiaziz/",
+  github: "https://github.com/kuahbanyak",
 };
 
 export type SkillGroup = { category: string; items: string[] };
@@ -56,16 +53,15 @@ export type Project = {
   demo?: string;
 };
 
-// TODO: replace these with 3+ real personal / freelance / open-source projects with public links.
 export const projects: Project[] = [
   {
-    title: "Project One — TODO",
+    title: "Project One — MEDICAL APPOINTMENT BOOKING SYSTEM",
     description:
       "This project is about building system for Medical Appointment Booking, where people can book on hospital online.",
     problem:
       "TODO: When booking on hospital we need to go to the hospital and wait for a long time, so we need to make a system that can help people to book on hospital online.",
     stack: ["Go", "PostgreSQL", "Docker" , "React + Vite"],
-    github: "https://github.com/kuahbanyak/LearnGO", // TODO
+    github: "https://github.com/kuahbanyak/LearnGO",
   },
 ];
 

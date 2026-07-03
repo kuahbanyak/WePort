@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  weport:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weport
+    ports:
+      - "3000:3000"
+    networks:
+      - learngo_mediqueue_network
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+
+networks:
+  learngo_mediqueue_network:
+    external: true
+

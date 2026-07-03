@@ -4,53 +4,40 @@ export const skillCategories: SkillCategory[] = [
   {
     label: "Languages & Frameworks",
     routePath: "/skills/languages",
-    skills: ["C#", ".NET Core", "Go"],
+    skills: ["C#", ".NET Core", "Go" , "TypeScript", "JavaScript", "HTML" , "CSS"],
   },
   {
     label: "Architecture",
     routePath: "/skills/architecture",
-    skills: ["Microservices", "RESTful APIs", "MVC"],
+    skills: ["Microservices", "RESTful APIs", "MVC", "TDD" , "Clean Architecture"],
   },
   {
     label: "Data",
     routePath: "/skills/data",
-    skills: ["SQL Server", "PostgreSQL", "Schema Design", "Query Optimization"],
+    skills: ["SQL Server", "PostgreSQL", "Schema Design", "Query Optimization" , "Database Design" , "Database Normalization" , "Database Performance"],
   },
   {
     label: "Cloud & Tools",
     routePath: "/skills/cloud",
-    skills: ["Azure DevOps", "CI/CD", "Git"],
+    skills: ["Azure DevOps", "CI/CD", "Git" , "Docker" , "Kubernetes"],
   },
   {
     label: "Practices",
     routePath: "/skills/practices",
-    skills: ["Agile / Scrum", "TDD", "Code Review"],
+    skills: ["Agile / Scrum", "TDD", "Code Review" , "Cross-Functional Collaboration"],
   },
 ];
 
-// TODO(Alwi): Replace with your real projects — title, description, problem solved,
 // stack, and links. Send me 2-3 and I'll drop them in.
 export const projects: Project[] = [
-  {
-    title: "Project title goes here",
-    description: "One or two sentences on what this project is and what it does.",
-    problem: "The specific problem this solved, in concrete terms.",
-    stack: ["C#", ".NET Core", "PostgreSQL"],
-    githubUrl: "#",
-  },
-  {
-    title: "Project title goes here",
-    description: "One or two sentences on what this project is and what it does.",
-    problem: "The specific problem this solved, in concrete terms.",
-    stack: ["Go", "Docker"],
-    githubUrl: "#",
-  },
-  {
-    title: "Project title goes here",
-    description: "One or two sentences on what this project is and what it does.",
-    problem: "The specific problem this solved, in concrete terms.",
-    stack: ["C#", "Microservices"],
-    githubUrl: "#",
+    {
+    title: "Project One — MEDICAL APPOINTMENT BOOKING SYSTEM",
+    description:
+        "This project is about building system for Medical Appointment Booking, where people can book on hospital online.",
+    problem:
+        "TODO: When booking on hospital we need to go to the hospital and wait for a long time, so we need to make a system that can help people to book on hospital online.",
+    stack: ["Go", "PostgreSQL", "Docker" , "React + Vite"],
+    githubUrl: "https://github.com/kuahbanyak/LearnGO",
   },
 ];
 
@@ -82,7 +69,7 @@ export const experience: ExperienceEntry[] = [
 
 // TODO(Alwi): Add your real email, LinkedIn, and GitHub links here.
 export const contactLinks: ContactLink[] = [
-  { label: "Email", value: "your@email.com", href: "mailto:your@email.com" },
-  { label: "LinkedIn", value: "linkedin.com/in/yourprofile", href: "#" },
-  { label: "GitHub", value: "github.com/yourusername", href: "#" },
+  { label: "Email", value: "me@email.com", href: "mailto:alwibusiness@gmail.com" },
+  { label: "LinkedIn", value: "linkedin.com/in/muhammadalwiaziz/", href: "https://www.linkedin.com/in/muhammadalwiaziz/" },
+  { label: "GitHub", value: "github.com/kuahbanyak", href: "https://github.com/kuahbanyak" },
 ];
