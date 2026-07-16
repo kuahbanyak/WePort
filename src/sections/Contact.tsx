@@ -31,9 +31,6 @@ export function Contact() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) return;
-
-    // TODO(Alwi): Wire this up to a form-delivery service (Formspree, EmailJS, etc.)
-    // For now this just simulates a successful submission.
     setStatus("sending");
     setTimeout(() => {
       setStatus("success");
