@@ -8,9 +8,9 @@ import { Contact } from "./sections/Contact";
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen w-full overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text-primary)]">
       <Nav />
-      <main>
+      <main className="w-full overflow-x-hidden">
         <Hero />
         <Skills />
         <Projects />
@@ -18,7 +18,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

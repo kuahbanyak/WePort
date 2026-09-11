@@ -4,39 +4,48 @@ export const skillCategories: SkillCategory[] = [
   {
     label: "Languages & Frameworks",
     routePath: "/skills/languages",
-    skills: ["C#", ".NET Core", "Go" , "TypeScript", "JavaScript", "HTML" , "CSS"],
+    skills: ["C#", ".NET Core", "Go", "TypeScript", "JavaScript", "HTML", "CSS"],
+    color: "var(--color-amber)",
+    badgeBg: "rgba(245, 158, 11, 0.12)",
   },
   {
     label: "Architecture",
     routePath: "/skills/architecture",
-    skills: ["Microservices", "RESTful APIs", "MVC", "TDD" , "Clean Architecture"],
+    skills: ["Microservices", "RESTful APIs", "MVC", "TDD", "Clean Architecture"],
+    color: "var(--color-cyan)",
+    badgeBg: "rgba(6, 182, 212, 0.12)",
   },
   {
-    label: "Data",
+    label: "Data & Storage",
     routePath: "/skills/data",
-    skills: ["SQL Server", "PostgreSQL", "Schema Design", "Query Optimization" , "Database Design" , "Database Normalization" , "Database Performance"],
+    skills: ["SQL Server", "PostgreSQL", "Schema Design", "Query Optimization", "Database Normalization", "Performance Tuning"],
+    color: "var(--color-emerald)",
+    badgeBg: "rgba(16, 185, 129, 0.12)",
   },
   {
-    label: "Cloud & Tools",
+    label: "Cloud & Infrastructure",
     routePath: "/skills/cloud",
-    skills: ["Azure DevOps", "CI/CD", "Git" , "Docker" , "Kubernetes"],
+    skills: ["Azure DevOps", "CI/CD", "Git", "Docker", "Kubernetes"],
+    color: "var(--color-sky)",
+    badgeBg: "rgba(56, 189, 248, 0.12)",
   },
   {
-    label: "Practices",
+    label: "Engineering Practices",
     routePath: "/skills/practices",
-    skills: ["Agile / Scrum", "TDD", "Code Review" , "Cross-Functional Collaboration"],
+    skills: ["Agile / Scrum", "TDD", "Code Review", "Cross-Functional Collaboration"],
+    color: "var(--color-rose)",
+    badgeBg: "rgba(244, 63, 94, 0.12)",
   },
 ];
 
-// stack, and links. Send me 2-3 and I'll drop them in.
 export const projects: Project[] = [
-    {
-    title: "Project One — MEDICAL APPOINTMENT BOOKING SYSTEM",
+  {
+    title: "Medical Appointment Booking System",
     description:
-        "This project is about building system for Medical Appointment Booking, where people can book on hospital online.",
+      "A distributed booking engine that enables patients to schedule appointments online and cuts in-person wait times.",
     problem:
-        "TODO: When booking on hospital we need to go to the hospital and wait for a long time, so we need to make a system that can help people to book on hospital online.",
-    stack: ["Go", "PostgreSQL", "Docker" , "React + Vite"],
+      "Traditional hospital registration forced patients to wait on-site for extended periods without queue visibility. This system solves it with digital reservation and real-time slot availability.",
+    stack: ["Go", "PostgreSQL", "Docker", "React", "Vite"],
     githubUrl: "https://github.com/kuahbanyak/LearnGO",
   },
 ];
@@ -45,7 +54,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Back End Developer (Contract)",
     company: "PT United Tractors Tbk",
-    duration: "Jul 2022 — Present",
+    duration: "Jul 2022 to Present",
     location: "East Jakarta · On-site",
     bullets: [
       "Built and maintained backend services in C#/.NET Core and Go for internal operations.",
@@ -58,7 +67,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Back End Developer (Internship)",
     company: "PT United Tractors Tbk",
-    duration: "Apr 2022 — Jun 2022",
+    duration: "Apr 2022 to Jun 2022",
     location: "East Jakarta · On-site",
     bullets: [
       "Gained early backend exposure using JavaScript, HTML, and related web fundamentals.",
@@ -67,9 +76,8 @@ export const experience: ExperienceEntry[] = [
   },
 ];
 
-// TODO(Alwi): Add your real email, LinkedIn, and GitHub links here.
 export const contactLinks: ContactLink[] = [
-  { label: "Email", value: "me@email.com", href: "mailto:alwibusiness@gmail.com" },
-  { label: "LinkedIn", value: "linkedin.com/in/muhammadalwiaziz/", href: "https://www.linkedin.com/in/muhammadalwiaziz/" },
+  { label: "Email", value: "alwibusiness@gmail.com", href: "mailto:alwibusiness@gmail.com" },
+  { label: "LinkedIn", value: "linkedin.com/in/muhammadalwiaziz", href: "https://www.linkedin.com/in/muhammadalwiaziz/" },
   { label: "GitHub", value: "github.com/kuahbanyak", href: "https://github.com/kuahbanyak" },
 ];

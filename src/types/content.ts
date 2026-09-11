@@ -2,6 +2,8 @@ export interface SkillCategory {
   label: string;
   routePath: string;
   skills: string[];
+  color?: string;
+  badgeBg?: string;
 }
 
 export interface Project {

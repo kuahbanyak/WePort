@@ -3,7 +3,7 @@
 
 export const profile = {
   name: "Muhammad Alwi Aziz",
-  title: "Backend Engineer — .NET Core & Go",
+  title: "Backend Engineer: .NET Core & Go",
   tagline: "Microservices · REST APIs · Cloud",
   intro:
     "I'm a Backend Engineer with 3–5 years of experience building scalable microservices and RESTful APIs in C#/.NET Core and Go. I focus on clean server-side architecture, database performance, and shipping reliably in cloud environments like Azure DevOps.",
@@ -55,12 +55,12 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Project One — MEDICAL APPOINTMENT BOOKING SYSTEM",
+    title: "Project One: Medical Appointment Booking System",
     description:
       "This project is about building system for Medical Appointment Booking, where people can book on hospital online.",
     problem:
-      "TODO: When booking on hospital we need to go to the hospital and wait for a long time, so we need to make a system that can help people to book on hospital online.",
-    stack: ["Go", "PostgreSQL", "Docker" , "React + Vite"],
+      "When booking at hospitals, patients previously had to wait in line for hours without queue visibility. This system enables digital appointment scheduling.",
+    stack: ["Go", "PostgreSQL", "Docker", "React + Vite"],
     github: "https://github.com/kuahbanyak/LearnGO",
   },
 ];
@@ -77,7 +77,7 @@ export const experiences: Experience[] = [
   {
     role: "Back End Developer (Contract)",
     company: "PT United Tractors Tbk",
-    period: "Jul 2022 – Present",
+    period: "Jul 2022 to Present",
     location: "East Jakarta · On-site",
     bullets: [
       "Built and maintained backend services in C#/.NET Core and Go for internal operations.",
@@ -89,10 +89,10 @@ export const experiences: Experience[] = [
   {
     role: "Back End Developer (Internship)",
     company: "PT United Tractors Tbk",
-    period: "Apr 2022 – Jun 2022",
+    period: "Apr 2022 to Jun 2022",
     location: "East Jakarta",
     bullets: [
-      "Early backend exposure using JavaScript, HTML and related web fundamentals — laying the foundation for the contract role that followed.",
+      "Early backend exposure using JavaScript, HTML and related web fundamentals, laying the foundation for the contract role that followed.",
     ],
   },
 ];
