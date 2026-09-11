@@ -24,6 +24,9 @@ dist-ssr
 *.sw?
 
 .junie
-package-lock.json
+/package-lock.json
 .agents
 graphify-out
+/skills-lock.json
+/AGENTS.md
+/DESIGN.md
