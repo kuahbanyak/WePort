@@ -805,46 +805,80 @@ export function ThreeHeroScene() {
     let isDragging = false;
     let previousPointerX = 0;
     let previousPointerY = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isHorizontalOrbit = false;
 
-    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+    const handleMouseDown = (e: MouseEvent) => {
       isDragging = true;
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-      previousPointerX = clientX;
-      previousPointerY = clientY;
+      previousPointerX = e.clientX;
+      previousPointerY = e.clientY;
     };
 
-    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-
+    const handleMouseMove = (e: MouseEvent) => {
       if (isDragging) {
-        const deltaX = clientX - previousPointerX;
-        const deltaY = clientY - previousPointerY;
+        const deltaX = e.clientX - previousPointerX;
+        const deltaY = e.clientY - previousPointerY;
         targetRotationY += deltaX * 0.008;
         targetRotationX += deltaY * 0.008;
-        previousPointerX = clientX;
-        previousPointerY = clientY;
+        previousPointerX = e.clientX;
+        previousPointerY = e.clientY;
       } else {
         const rect = container.getBoundingClientRect();
-        const normX = ((clientX - rect.left) / rect.width) * 2 - 1;
-        const normY = -(((clientY - rect.top) / rect.height) * 2 - 1);
+        const normX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        const normY = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
         targetRotationY = normX * 0.45;
         targetRotationX = -normY * 0.35 + 0.15;
       }
     };
 
-    const handlePointerUp = () => {
+    const handleMouseUp = () => {
       isDragging = false;
     };
 
-    container.addEventListener("mousedown", handlePointerDown);
-    window.addEventListener("mousemove", handlePointerMove);
-    window.addEventListener("mouseup", handlePointerUp);
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      isDragging = true;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      previousPointerX = touchStartX;
+      previousPointerY = touchStartY;
+      isHorizontalOrbit = false;
+    };
 
-    container.addEventListener("touchstart", handlePointerDown, { passive: true });
-    window.addEventListener("touchmove", handlePointerMove, { passive: true });
-    window.addEventListener("touchend", handlePointerUp);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      const clientX = e.touches[0].clientX;
+      const clientY = e.touches[0].clientY;
+      const diffX = clientX - touchStartX;
+      const diffY = clientY - touchStartY;
+
+      // Discriminate between intentional horizontal orbit vs vertical page scrolling
+      if (!isHorizontalOrbit && Math.abs(diffX) > 8 && Math.abs(diffX) > Math.abs(diffY)) {
+        isHorizontalOrbit = true;
+      }
+
+      if (isHorizontalOrbit) {
+        const deltaX = clientX - previousPointerX;
+        targetRotationY += deltaX * 0.008;
+      }
+      previousPointerX = clientX;
+      previousPointerY = clientY;
+    };
+
+    const handleTouchEnd = () => {
+      isDragging = false;
+      isHorizontalOrbit = false;
+    };
+
+    container.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    container.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd);
+    window.addEventListener("touchcancel", handleTouchEnd);
 
     // --- Resize Handling ---
     const handleResize = () => {
@@ -854,8 +888,10 @@ export function ThreeHeroScene() {
       if (newWidth === 0 || newHeight === 0) return;
 
       camera.aspect = newWidth / newHeight;
-      if (newWidth < 420) {
-        camera.position.z = 13.2;
+      if (newWidth < 360) {
+        camera.position.z = 13.8;
+      } else if (newWidth < 420) {
+        camera.position.z = 13.0;
       } else if (newWidth < 640) {
         camera.position.z = 12.0;
       } else if (newWidth < 1024) {
@@ -1001,13 +1037,14 @@ export function ThreeHeroScene() {
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
 
-      container.removeEventListener("mousedown", handlePointerDown);
-      window.removeEventListener("mousemove", handlePointerMove);
-      window.removeEventListener("mouseup", handlePointerUp);
+      container.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
 
-      container.removeEventListener("touchstart", handlePointerDown);
-      window.removeEventListener("touchmove", handlePointerMove);
-      window.removeEventListener("touchend", handlePointerUp);
+      container.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("touchcancel", handleTouchEnd);
 
       // Clean up geometries and materials
       scene.traverse((obj) => {
@@ -1028,7 +1065,7 @@ export function ThreeHeroScene() {
 
   return (
     <div
-      className="relative flex h-[310px] xs:h-[360px] sm:h-[420px] md:h-[480px] lg:h-[540px] xl:h-[620px] 2xl:h-[680px] w-full items-center justify-center overflow-hidden"
+      className="relative flex h-[280px] xs:h-[320px] sm:h-[380px] md:h-[440px] lg:h-[500px] xl:h-[580px] 2xl:h-[640px] w-full items-center justify-center overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -1036,7 +1073,7 @@ export function ThreeHeroScene() {
       <div
         ref={containerRef}
         className="h-full w-full cursor-grab active:cursor-grabbing touch-pan-y"
-        title="Drag to rotate 3D architecture"
+        title="Drag horizontally to rotate 3D architecture"
         aria-label="Interactive 3D distributed architecture visualization"
       />
 

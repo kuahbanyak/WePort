@@ -5,7 +5,7 @@ export function Projects() {
   const isSingleProject = projects.length === 1;
 
   return (
-    <section id="projects" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28 xl:py-32">
+    <section id="projects" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-12 sm:py-16 md:py-20 lg:py-28 xl:py-32">
       <div className="mx-auto w-full max-w-[1700px] 2xl:max-w-[1920px]">
         <RouteLabel path="/projects" title="Projects" accentColor="var(--color-coral)" />
         <SectionHeading>Selected Architecture &amp; Projects</SectionHeading>
@@ -25,7 +25,7 @@ export function Projects() {
                 {/* Accent Top Bar (Coral to Amber to Violet) */}
                 <div className="h-1 w-full bg-gradient-to-r from-[var(--color-coral)] via-[var(--color-amber)] to-[var(--color-accent)]" />
 
-                <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-12 lg:gap-12 lg:p-10 xl:p-12">
+                <div className="grid gap-6 sm:gap-8 p-4 sm:p-6 md:p-8 lg:grid-cols-12 lg:gap-12 lg:p-10 xl:p-12">
                   {/* Left Column: Project Details & Problem */}
                   <div className="flex flex-col justify-between lg:col-span-7 xl:col-span-8">
                     <div>
@@ -57,7 +57,7 @@ export function Projects() {
                       </p>
 
                       <div
-                        className="mt-6 rounded-xl border p-4 sm:p-5"
+                        className="mt-6 rounded-xl border p-3.5 sm:p-5"
                         style={{
                           backgroundColor: "rgba(9, 13, 22, 0.65)",
                           borderColor: "var(--color-border-bright)",
@@ -80,13 +80,13 @@ export function Projects() {
                     </div>
 
                     {/* Action Links */}
-                    <div className="mt-8 flex flex-wrap items-center gap-4 pt-4 border-t border-[var(--color-border)]">
+                    <div className="mt-6 sm:mt-8 flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4 pt-4 border-t border-[var(--color-border)]">
                       {project.githubUrl && (
                         <a
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0"
+                          className="flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-all hover:brightness-110 active:scale-[0.98]"
                           style={{ backgroundColor: "var(--color-accent-solid)", color: "#fff" }}
                         >
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -100,7 +100,7 @@ export function Projects() {
                           href={project.demoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="hover-accent flex items-center gap-2 rounded-lg border px-5 py-2.5 text-sm font-medium transition-all hover:-translate-y-0.5 active:translate-y-0"
+                          className="hover-accent flex min-h-[44px] items-center justify-center gap-2 rounded-lg border px-5 py-2.5 text-sm font-medium transition-all active:scale-[0.98]"
                           style={{
                             borderColor: "var(--color-border-bright)",
                             color: "var(--color-text-primary)",
@@ -115,7 +115,7 @@ export function Projects() {
 
                   {/* Right Column: Stack & Specifications */}
                   <div
-                    className="flex flex-col justify-between rounded-xl border p-6 lg:col-span-5 xl:col-span-4"
+                    className="mt-4 lg:mt-0 flex flex-col justify-between rounded-xl border p-4 sm:p-6 lg:col-span-5 xl:col-span-4"
                     style={{
                       backgroundColor: "rgba(9, 13, 22, 0.5)",
                       borderColor: "var(--color-border-bright)",
@@ -227,16 +227,17 @@ export function Projects() {
                   </div>
                 </div>
 
-                <div className="mt-6 flex gap-4 pt-4 border-t border-[var(--color-border)]">
+                <div className="mt-6 flex flex-wrap items-center gap-4 pt-4 border-t border-[var(--color-border)]">
                   {project.githubUrl && (
                     <a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover-accent text-sm font-medium flex items-center gap-1"
+                      className="hover-accent text-sm font-medium inline-flex min-h-[44px] items-center gap-1.5 py-2 transition-transform active:scale-95"
                       style={{ color: "var(--color-text-secondary)" }}
                     >
-                      GitHub <span>→</span>
+                      <span>GitHub</span>
+                      <span aria-hidden="true">→</span>
                     </a>
                   )}
                   {project.demoUrl && (
@@ -244,10 +245,11 @@ export function Projects() {
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover-accent text-sm font-medium flex items-center gap-1"
+                      className="hover-accent text-sm font-medium inline-flex min-h-[44px] items-center gap-1.5 py-2 transition-transform active:scale-95"
                       style={{ color: "var(--color-text-secondary)" }}
                     >
-                      Live demo <span>↗</span>
+                      <span>Live demo</span>
+                      <span aria-hidden="true">↗</span>
                     </a>
                   )}
                 </div>
