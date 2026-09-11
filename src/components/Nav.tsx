@@ -79,12 +79,12 @@ export function Nav() {
           </a>
         </div>
 
-        {/* Mobile Hamburger Button (44x44px minimum tap target with active feedback) */}
+        {/* Mobile Hamburger Button */}
         <button
-          className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-[var(--color-border-bright)] bg-[var(--color-bg-elevated)] transition-all hover:border-[var(--color-accent)] active:scale-95 md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--color-border-bright)] bg-[var(--color-bg-elevated)] transition-colors hover:border-[var(--color-accent)] md:hidden"
           style={{ color: "var(--color-text-primary)" }}
           onClick={() => setMenuOpen((v) => !v)}
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-label="Toggle mobile menu"
           aria-expanded={menuOpen}
         >
           {menuOpen ? (
@@ -102,7 +102,7 @@ export function Nav() {
       {/* Mobile Dropdown Menu with solid backdrop */}
       {menuOpen && (
         <div
-          className="border-t border-[var(--color-border)] bg-[var(--color-bg-elevated)]/98 px-4 pt-3 pb-6 backdrop-blur-xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200"
+          className="border-t border-[var(--color-border)] bg-[var(--color-bg-elevated)]/95 px-4 pt-3 pb-5 backdrop-blur-xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200"
         >
           <ul className="flex flex-col space-y-1">
             {navItems.map((item) => (
@@ -110,26 +110,22 @@ export function Nav() {
                 <a
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className="flex min-h-[44px] items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[var(--color-bg-elevated-hover)] hover:text-[var(--color-accent-bright)] active:bg-[var(--color-bg-elevated-hover)] active:scale-[0.99]"
+                  className="flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium transition-colors hover:bg-[var(--color-bg-elevated-hover)] hover:text-[var(--color-accent-bright)]"
                   style={{ color: "var(--color-text-secondary)" }}
                 >
                   <span>{item.label}</span>
-                  <span className="font-mono text-xs text-[var(--color-text-tertiary)] opacity-60">→</span>
                 </a>
               </li>
             ))}
           </ul>
-          <div className="mt-3 pt-3 border-t border-[var(--color-border)]">
+          <div className="mt-4 pt-3 border-t border-[var(--color-border)]">
             <a
               href="#contact"
               onClick={() => setMenuOpen(false)}
-              className="flex min-h-[44px] w-full items-center justify-center rounded-lg py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all hover:brightness-110 active:scale-[0.99]"
-              style={{
-                backgroundColor: "var(--color-accent-solid)",
-                fontFamily: "var(--font-mono)",
-              }}
+              className="flex w-full items-center justify-center rounded-lg py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "var(--color-accent-solid)" }}
             >
-              Get In Touch
+              Contact Me
             </a>
           </div>
         </div>

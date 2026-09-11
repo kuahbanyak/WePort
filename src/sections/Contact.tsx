@@ -39,27 +39,27 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-12 sm:py-16 md:py-20 lg:py-28 xl:py-32">
+    <section id="contact" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28 xl:py-32">
       <div className="mx-auto w-full max-w-[1700px] 2xl:max-w-[1920px]">
         <RouteLabel path="/contact" title="Contact" accentColor="var(--color-cyan)" />
         <SectionHeading>Let's Connect</SectionHeading>
 
-        <div className="grid gap-6 sm:gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16 items-start">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16 items-start">
           {/* Direct links & Availability card */}
-          <div className="space-y-4 sm:space-y-6 lg:col-span-5">
-            <p className="text-sm sm:text-base lg:text-lg leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+          <div className="space-y-6 lg:col-span-5">
+            <p className="text-base sm:text-lg leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
               Open to backend roles and contract engineering projects involving .NET
               Core, Go, or microservice architecture. Reach out via the form, or through direct channels below.
             </p>
 
-            <ul className="space-y-2.5 sm:space-y-3">
+            <ul className="space-y-3">
               {contactLinks.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
                     target={link.href.startsWith("http") ? "_blank" : undefined}
                     rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className="group flex min-h-[48px] flex-col xs:flex-row xs:items-center justify-between gap-1 xs:gap-3 rounded-xl px-4 py-3 sm:px-5 sm:py-4 text-sm font-medium transition-all hover:-translate-y-0.5 hover:border-[var(--color-cyan)] active:scale-[0.99]"
+                    className="group flex items-center justify-between rounded-xl px-5 py-4 text-sm font-medium transition-all hover:-translate-y-0.5 hover:border-[var(--color-cyan)]"
                     style={{
                       backgroundColor: "var(--color-bg-elevated)",
                       border: "1px solid var(--color-border)",
@@ -67,12 +67,12 @@ export function Contact() {
                     }}
                   >
                     <span
-                      className="font-mono text-xs text-[var(--color-text-tertiary)] uppercase tracking-wider shrink-0"
+                      className="font-mono text-xs text-[var(--color-text-tertiary)] uppercase tracking-wider"
                     >
                       {link.label}
                     </span>
-                    <span className="flex items-center gap-1.5 group-hover:text-[var(--color-cyan)] font-medium truncate break-all">
-                      <span className="truncate">{link.value}</span>
+                    <span className="flex items-center gap-1.5 group-hover:text-[var(--color-cyan)] font-medium">
+                      <span>{link.value}</span>
                     </span>
                   </a>
                 </li>
@@ -81,7 +81,7 @@ export function Contact() {
 
             {/* Quick status card */}
             <div
-              className="rounded-xl border p-4 sm:p-5"
+              className="rounded-xl border p-5"
               style={{
                 backgroundColor: "rgba(9, 13, 22, 0.6)",
                 borderColor: "var(--color-border-bright)",
@@ -101,7 +101,7 @@ export function Contact() {
 
           {/* Form in elevated card */}
           <div
-            className="rounded-2xl border p-4 sm:p-6 md:p-8 lg:p-10 lg:col-span-7"
+            className="rounded-2xl border p-6 sm:p-8 lg:p-10 lg:col-span-7"
             style={{
               backgroundColor: "var(--color-bg-elevated)",
               borderColor: "var(--color-border)",
@@ -184,7 +184,7 @@ export function Contact() {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="flex w-full sm:w-auto min-h-[48px] items-center justify-center rounded-lg px-8 py-3.5 text-sm sm:text-base font-semibold transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] disabled:opacity-60 cursor-pointer"
+                  className="flex w-full sm:w-auto items-center justify-center rounded-lg px-8 py-3.5 text-sm sm:text-base font-semibold transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 cursor-pointer"
                   style={{ backgroundColor: "var(--color-accent-solid)", color: "#fff" }}
                 >
                   {status === "sending" ? "Sending…" : "Send message"}

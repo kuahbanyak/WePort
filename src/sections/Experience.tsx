@@ -3,7 +3,7 @@ import { RouteLabel, SectionHeading } from "../components/RouteLabel";
 
 export function Experience() {
   return (
-    <section id="experience" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-12 sm:py-16 md:py-20 lg:py-28 xl:py-32">
+    <section id="experience" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28 xl:py-32">
       <div className="mx-auto w-full max-w-[1700px] 2xl:max-w-[1920px]">
         <RouteLabel path="/experience" title="Experience" accentColor="var(--color-emerald)" />
         <SectionHeading>Professional Experience</SectionHeading>
@@ -11,20 +11,20 @@ export function Experience() {
         <div className="relative">
           {/* Vertical continuous growth line for mobile/tablet */}
           <div
-            className="absolute left-[6px] sm:left-[8px] top-3 bottom-3 w-px lg:hidden"
+            className="absolute left-1.75 sm:left-2.25 top-3 bottom-3 w-px lg:hidden"
             style={{ backgroundColor: "var(--color-border-bright)" }}
             aria-hidden="true"
           />
 
-          <div className="space-y-6 sm:space-y-8 lg:space-y-8">
+          <div className="space-y-8 sm:space-y-10 lg:space-y-8">
             {experience.map((entry, i) => (
               <div
                 key={i}
-                className="relative pl-6 sm:pl-8 lg:pl-0 group"
+                className="relative pl-7 sm:pl-9 lg:pl-0 group"
               >
                 {/* Mobile/Tablet timeline dot */}
                 <span
-                  className="absolute left-0 top-2 h-3.5 w-3.5 rounded-full lg:hidden"
+                  className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full lg:hidden"
                   style={{
                     backgroundColor: i === 0 ? "var(--color-emerald)" : "var(--color-bg)",
                     border: "2px solid var(--color-emerald)",
@@ -34,7 +34,7 @@ export function Experience() {
 
                 {/* Desktop Split Card (Full Width) / Mobile Stack */}
                 <div
-                  className="grid lg:grid-cols-12 gap-4 lg:gap-8 rounded-2xl border p-4 sm:p-6 lg:p-8 transition-all duration-300 hover:border-[var(--color-emerald)] hover:shadow-xl hover:shadow-emerald-500/5"
+                  className="grid lg:grid-cols-12 gap-4 lg:gap-8 rounded-2xl border p-5 sm:p-6 lg:p-8 transition-all duration-300 hover:border-[var(--color-emerald)] hover:shadow-xl hover:shadow-emerald-500/5"
                   style={{
                     backgroundColor: "var(--color-bg-elevated)",
                     borderColor: "var(--color-border)",
@@ -43,7 +43,7 @@ export function Experience() {
                   {/* Left Column (Metadata: Role, Company, Period) */}
                   <div className="lg:col-span-4 xl:col-span-3 flex flex-col justify-between">
                     <div>
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex items-center gap-2">
                         <span
                           className="inline-block rounded px-2.5 py-1 text-xs font-semibold"
                           style={{

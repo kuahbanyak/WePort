@@ -35,7 +35,7 @@ export function RouteLabel({ path, title, accentColor }: RouteLabelProps) {
 export function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <h2
-      className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight"
+      className="mb-8 sm:mb-10 lg:mb-12 text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight"
       style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}
     >
       {children}
