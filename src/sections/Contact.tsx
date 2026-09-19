@@ -45,7 +45,7 @@ export function Contact() {
         <SectionHeading>Let's Connect</SectionHeading>
 
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16 items-start">
-          {/* Direct links & Availability card */}
+          {/* Left: direct links & availability */}
           <div className="space-y-6 lg:col-span-5">
             <p className="text-base sm:text-lg leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
               Open to backend roles and contract engineering projects involving .NET
@@ -66,20 +66,18 @@ export function Contact() {
                       color: "var(--color-text-primary)",
                     }}
                   >
-                    <span
-                      className="font-mono text-xs text-[var(--color-text-tertiary)] uppercase tracking-wider"
-                    >
+                    <span className="font-mono text-xs" style={{ color: "var(--color-text-secondary)" }}>
                       {link.label}
                     </span>
                     <span className="flex items-center gap-1.5 group-hover:text-[var(--color-cyan)] font-medium">
-                      <span>{link.value}</span>
+                      {link.value}
                     </span>
                   </a>
                 </li>
               ))}
             </ul>
 
-            {/* Quick status card */}
+            {/* Availability: marks real status, not a decorative badge */}
             <div
               className="rounded-xl border p-5"
               style={{
@@ -88,9 +86,13 @@ export function Contact() {
               }}
             >
               <div className="flex items-center gap-2.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-emerald)] status-dot shrink-0" />
-                <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-emerald)] font-semibold">
-                  CURRENT AVAILABILITY
+                <span
+                  className="h-2 w-2 rounded-full shrink-0"
+                  style={{ backgroundColor: "var(--color-emerald)" }}
+                  aria-label="Currently available"
+                />
+                <span className="font-mono text-xs font-semibold" style={{ color: "var(--color-emerald)" }}>
+                  Currently available
                 </span>
               </div>
               <p className="mt-2 text-xs sm:text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
@@ -99,7 +101,7 @@ export function Contact() {
             </div>
           </div>
 
-          {/* Form in elevated card */}
+          {/* Right: contact form */}
           <div
             className="rounded-2xl border p-6 sm:p-8 lg:p-10 lg:col-span-7"
             style={{
@@ -120,8 +122,8 @@ export function Contact() {
                   id="name"
                   name="name"
                   type="text"
-                  placeholder="Your Name"
-                  className="w-full rounded-lg px-4 py-3 text-base outline-none transition-all focus:border-[var(--color-accent-bright)] focus:ring-1 focus:ring-[var(--color-accent-bright)]"
+                  placeholder="Your name"
+                  className="contact-input w-full rounded-lg px-4 py-3 text-base transition-all"
                   style={{
                     backgroundColor: "rgba(10, 14, 20, 0.75)",
                     border: `1px solid ${errors.name ? "#e25555" : "var(--color-border-bright)"}`,
@@ -145,7 +147,7 @@ export function Contact() {
                   name="email"
                   type="email"
                   placeholder="you@company.com"
-                  className="w-full rounded-lg px-4 py-3 text-base outline-none transition-all focus:border-[var(--color-accent-bright)] focus:ring-1 focus:ring-[var(--color-accent-bright)]"
+                  className="contact-input w-full rounded-lg px-4 py-3 text-base transition-all"
                   style={{
                     backgroundColor: "rgba(10, 14, 20, 0.75)",
                     border: `1px solid ${errors.email ? "#e25555" : "var(--color-border-bright)"}`,
@@ -169,7 +171,7 @@ export function Contact() {
                   name="message"
                   rows={5}
                   placeholder="Tell me about your project or opportunity..."
-                  className="w-full resize-none rounded-lg px-4 py-3 text-base outline-none transition-all focus:border-[var(--color-accent-bright)] focus:ring-1 focus:ring-[var(--color-accent-bright)]"
+                  className="contact-input w-full resize-none rounded-lg px-4 py-3 text-base transition-all"
                   style={{
                     backgroundColor: "rgba(10, 14, 20, 0.75)",
                     border: `1px solid ${errors.message ? "#e25555" : "var(--color-border-bright)"}`,
@@ -187,13 +189,20 @@ export function Contact() {
                   className="flex w-full sm:w-auto items-center justify-center rounded-lg px-8 py-3.5 text-sm sm:text-base font-semibold transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 cursor-pointer"
                   style={{ backgroundColor: "var(--color-accent-solid)", color: "#fff" }}
                 >
-                  {status === "sending" ? "Sending…" : "Send message"}
+                  {status === "sending" ? "Sending..." : "Send message"}
                 </button>
               </div>
 
               {status === "success" && (
-                <div className="rounded-lg bg-[rgba(61,220,132,0.1)] border border-[var(--color-success)] p-4 text-sm text-[var(--color-success)] font-medium">
-                  ✓ Message sent successfully! I'll get back to you promptly.
+                <div
+                  className="rounded-lg border p-4 text-sm font-medium"
+                  style={{
+                    backgroundColor: "rgba(16, 185, 129, 0.08)",
+                    borderColor: "var(--color-success)",
+                    color: "var(--color-success)",
+                  }}
+                >
+                  Message sent. I'll get back to you promptly.
                 </div>
               )}
               {status === "error" && (

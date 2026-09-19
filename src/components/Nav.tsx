@@ -68,14 +68,13 @@ export function Nav() {
 
           <a
             href="#contact"
-            className="rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all hover:brightness-110 hover:-translate-y-0.5"
+            className="rounded-lg px-4 py-2 text-sm font-semibold transition-all hover:brightness-110 hover:-translate-y-0.5"
             style={{
               backgroundColor: "var(--color-accent-solid)",
               color: "#fff",
-              fontFamily: "var(--font-mono)",
             }}
           >
-            Get In Touch
+            Hire me
           </a>
         </div>
 
@@ -122,10 +121,10 @@ export function Nav() {
             <a
               href="#contact"
               onClick={() => setMenuOpen(false)}
-              className="flex w-full items-center justify-center rounded-lg py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              className="flex w-full items-center justify-center rounded-lg py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
               style={{ backgroundColor: "var(--color-accent-solid)" }}
             >
-              Contact Me
+              Hire me
             </a>
           </div>
         </div>

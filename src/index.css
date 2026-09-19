@@ -114,16 +114,8 @@ body {
 }
 
 .status-dot {
-  position: relative;
   display: inline-block;
-}
-.status-dot::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 9999px;
-  background-color: currentColor;
-  opacity: 0.25;
+  flex-shrink: 0;
 }
 
 @keyframes fade-up {
