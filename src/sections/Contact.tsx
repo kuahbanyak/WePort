@@ -1,8 +1,15 @@
 import { useState, type FormEvent } from "react";
 import { contactLinks } from "../data/content";
-import { RouteLabel, SectionHeading } from "../components/RouteLabel";
+import { SectionTitle } from "../components/SectionTitle";
+import { StickyNote } from "../components/StickyNote";
 
 type Status = "idle" | "sending" | "success" | "error";
+
+const contactStickies = [
+  { text: "Let's build.", rotate: -2 },
+  { text: "Let's solve it.", rotate: 1.5 },
+  { text: "Ship it.", rotate: -1 },
+];
 
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
@@ -11,7 +18,6 @@ export function Contact() {
   function validate(form: HTMLFormElement) {
     const data = new FormData(form);
     const next: Record<string, string> = {};
-
     const name = String(data.get("name") || "").trim();
     const email = String(data.get("email") || "").trim();
     const message = String(data.get("message") || "").trim();
@@ -20,17 +26,15 @@ export function Contact() {
     if (!email) next.email = "Email is required.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Enter a valid email address.";
     if (!message) next.message = "Message is required.";
-
     return next;
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const validationErrors = validate(form);
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length > 0) return;
+    const errs = validate(form);
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) return;
     setStatus("sending");
     setTimeout(() => {
       setStatus("success");
@@ -39,37 +43,50 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28 xl:py-32">
-      <div className="mx-auto w-full max-w-[1700px] 2xl:max-w-[1920px]">
-        <RouteLabel path="/contact" title="Contact" accentColor="var(--color-cyan)" />
-        <SectionHeading>Let's Connect</SectionHeading>
+    <section
+      id="contact"
+      className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28"
+    >
+      <div className="mx-auto w-full max-w-[1700px]">
+        <SectionTitle annotation="// Have an idea?">
+          Let's build something useful.
+        </SectionTitle>
 
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16 items-start">
-          {/* Left: direct links & availability */}
-          <div className="space-y-6 lg:col-span-5">
-            <p className="text-base sm:text-lg leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-              Open to backend roles and contract engineering projects involving .NET
-              Core, Go, or microservice architecture. Reach out via the form, or through direct channels below.
+          {/* Left: links + sticky notes */}
+          <div className="lg:col-span-5 space-y-6">
+            <p
+              className="text-lg sm:text-xl leading-relaxed"
+              style={{ fontFamily: "var(--font-body)", color: "var(--text-ink-secondary)" }}
+            >
+              Open to interesting products, engineering challenges, and
+              conversations about technology. Reach out through the form or
+              direct channels below.
             </p>
 
-            <ul className="space-y-3">
+            {/* Contact links: real, verifiable destinations */}
+            <ul className="space-y-3" role="list">
               {contactLinks.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
                     target={link.href.startsWith("http") ? "_blank" : undefined}
                     rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className="group flex items-center justify-between rounded-xl px-5 py-4 text-sm font-medium transition-all hover:-translate-y-0.5 hover:border-[var(--color-cyan)]"
+                    className="sketch-card group flex items-center justify-between p-4 transition-all hover:-translate-y-0.5"
                     style={{
-                      backgroundColor: "var(--color-bg-elevated)",
-                      border: "1px solid var(--color-border)",
-                      color: "var(--color-text-primary)",
+                      background: "var(--bg-board)",
                     }}
                   >
-                    <span className="font-mono text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                    <span
+                      className="text-xs font-semibold"
+                      style={{ fontFamily: "var(--font-label)", color: "var(--text-ink-tertiary)" }}
+                    >
                       {link.label}
                     </span>
-                    <span className="flex items-center gap-1.5 group-hover:text-[var(--color-cyan)] font-medium">
+                    <span
+                      className="text-sm font-medium transition-colors group-hover:text-[var(--marker-blue)]"
+                      style={{ fontFamily: "var(--font-body)", color: "var(--text-ink)" }}
+                    >
                       {link.value}
                     </span>
                   </a>
@@ -77,44 +94,60 @@ export function Contact() {
               ))}
             </ul>
 
-            {/* Availability: marks real status, not a decorative badge */}
+            {/* Sticky notes: whiteboard identity motif */}
+            <div className="flex flex-wrap gap-3 pt-2">
+              {contactStickies.map((note) => (
+                <StickyNote key={note.text} rotate={note.rotate} className="text-sm">
+                  {note.text}
+                </StickyNote>
+              ))}
+            </div>
+
+            {/* Availability: real status, no decorative badge */}
             <div
-              className="rounded-xl border p-5"
+              className="sketch-border rounded p-4"
               style={{
-                backgroundColor: "rgba(9, 13, 22, 0.6)",
-                borderColor: "var(--color-border-bright)",
+                background: "rgba(56, 142, 60, 0.06)",
+                borderColor: "var(--marker-green)",
+                borderRadius: "3px 7px 5px 4px / 5px 3px 7px 4px",
               }}
             >
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <span
                   className="h-2 w-2 rounded-full shrink-0"
-                  style={{ backgroundColor: "var(--color-emerald)" }}
+                  style={{ background: "var(--marker-green)" }}
                   aria-label="Currently available"
+                  aria-hidden="true"
                 />
-                <span className="font-mono text-xs font-semibold" style={{ color: "var(--color-emerald)" }}>
+                <span
+                  className="text-xs font-semibold"
+                  style={{ fontFamily: "var(--font-label)", color: "var(--marker-green)" }}
+                >
                   Currently available
                 </span>
               </div>
-              <p className="mt-2 text-xs sm:text-sm leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
-                Available for engineering conversations, architecture consultations, and backend contract roles.
+              <p
+                className="mt-2 text-xs sm:text-sm leading-relaxed"
+                style={{ fontFamily: "var(--font-body)", color: "var(--text-ink-secondary)" }}
+              >
+                Open for backend engineering roles, architecture consultations,
+                and contract projects.
               </p>
             </div>
           </div>
 
           {/* Right: contact form */}
           <div
-            className="rounded-2xl border p-6 sm:p-8 lg:p-10 lg:col-span-7"
-            style={{
-              backgroundColor: "var(--color-bg-elevated)",
-              borderColor: "var(--color-border)",
-            }}
+            className="sketch-card p-6 sm:p-8 lg:p-10 lg:col-span-7"
+            style={{ transform: "rotate(0.3deg)" }}
           >
             <form onSubmit={handleSubmit} noValidate className="space-y-5">
+              {/* Name field */}
               <div>
                 <label
                   htmlFor="name"
-                  className="mb-2 block text-sm font-medium"
-                  style={{ color: "var(--color-text-primary)" }}
+                  className="mb-1.5 block text-sm font-medium"
+                  style={{ fontFamily: "var(--font-label)", color: "var(--text-ink)" }}
                 >
                   Name
                 </label>
@@ -123,22 +156,32 @@ export function Contact() {
                   name="name"
                   type="text"
                   placeholder="Your name"
-                  className="contact-input w-full rounded-lg px-4 py-3 text-base transition-all"
+                  className="w-full px-4 py-3 text-base transition-all outline-none"
                   style={{
-                    backgroundColor: "rgba(10, 14, 20, 0.75)",
-                    border: `1px solid ${errors.name ? "#e25555" : "var(--color-border-bright)"}`,
-                    color: "var(--color-text-primary)",
+                    background: "var(--bg-board-tinted)",
+                    border: `1.5px solid ${errors.name ? "var(--marker-red)" : "var(--border-light)"}`,
+                    borderRadius: "3px 6px 4px 5px / 5px 3px 6px 4px",
+                    color: "var(--text-ink)",
+                    fontFamily: "var(--font-body)",
                   }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--marker-blue)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = errors.name ? "var(--marker-red)" : "var(--border-light)"; }}
                   aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                 />
-                {errors.name && <p className="mt-1.5 text-xs text-red-400 font-mono">{errors.name}</p>}
+                {errors.name && (
+                  <p id="name-error" className="mt-1.5 text-xs" style={{ fontFamily: "var(--font-label)", color: "var(--marker-red)" }}>
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
+              {/* Email field */}
               <div>
                 <label
                   htmlFor="email"
-                  className="mb-2 block text-sm font-medium"
-                  style={{ color: "var(--color-text-primary)" }}
+                  className="mb-1.5 block text-sm font-medium"
+                  style={{ fontFamily: "var(--font-label)", color: "var(--text-ink)" }}
                 >
                   Email
                 </label>
@@ -147,22 +190,32 @@ export function Contact() {
                   name="email"
                   type="email"
                   placeholder="you@company.com"
-                  className="contact-input w-full rounded-lg px-4 py-3 text-base transition-all"
+                  className="w-full px-4 py-3 text-base transition-all outline-none"
                   style={{
-                    backgroundColor: "rgba(10, 14, 20, 0.75)",
-                    border: `1px solid ${errors.email ? "#e25555" : "var(--color-border-bright)"}`,
-                    color: "var(--color-text-primary)",
+                    background: "var(--bg-board-tinted)",
+                    border: `1.5px solid ${errors.email ? "var(--marker-red)" : "var(--border-light)"}`,
+                    borderRadius: "3px 6px 4px 5px / 5px 3px 6px 4px",
+                    color: "var(--text-ink)",
+                    fontFamily: "var(--font-body)",
                   }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--marker-blue)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = errors.email ? "var(--marker-red)" : "var(--border-light)"; }}
                   aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
-                {errors.email && <p className="mt-1.5 text-xs text-red-400 font-mono">{errors.email}</p>}
+                {errors.email && (
+                  <p id="email-error" className="mt-1.5 text-xs" style={{ fontFamily: "var(--font-label)", color: "var(--marker-red)" }}>
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
+              {/* Message field */}
               <div>
                 <label
                   htmlFor="message"
-                  className="mb-2 block text-sm font-medium"
-                  style={{ color: "var(--color-text-primary)" }}
+                  className="mb-1.5 block text-sm font-medium"
+                  style={{ fontFamily: "var(--font-label)", color: "var(--text-ink)" }}
                 >
                   Message
                 </label>
@@ -171,42 +224,72 @@ export function Contact() {
                   name="message"
                   rows={5}
                   placeholder="Tell me about your project or opportunity..."
-                  className="contact-input w-full resize-none rounded-lg px-4 py-3 text-base transition-all"
+                  className="w-full resize-none px-4 py-3 text-base transition-all outline-none"
                   style={{
-                    backgroundColor: "rgba(10, 14, 20, 0.75)",
-                    border: `1px solid ${errors.message ? "#e25555" : "var(--color-border-bright)"}`,
-                    color: "var(--color-text-primary)",
+                    background: "var(--bg-board-tinted)",
+                    border: `1.5px solid ${errors.message ? "var(--marker-red)" : "var(--border-light)"}`,
+                    borderRadius: "3px 6px 4px 5px / 5px 3px 6px 4px",
+                    color: "var(--text-ink)",
+                    fontFamily: "var(--font-body)",
                   }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--marker-blue)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = errors.message ? "var(--marker-red)" : "var(--border-light)"; }}
                   aria-invalid={Boolean(errors.message)}
+                  aria-describedby={errors.message ? "message-error" : undefined}
                 />
-                {errors.message && <p className="mt-1.5 text-xs text-red-400 font-mono">{errors.message}</p>}
+                {errors.message && (
+                  <p id="message-error" className="mt-1.5 text-xs" style={{ fontFamily: "var(--font-label)", color: "var(--marker-red)" }}>
+                    {errors.message}
+                  </p>
+                )}
               </div>
 
-              <div className="pt-2">
+              <div className="pt-1">
+                {/* CTA: specific action. Marker blue per DESIGN.md. */}
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="flex w-full sm:w-auto items-center justify-center rounded-lg px-8 py-3.5 text-sm sm:text-base font-semibold transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 cursor-pointer"
-                  style={{ backgroundColor: "var(--color-accent-solid)", color: "#fff" }}
+                  className="sketch-border flex w-full sm:w-auto items-center justify-center px-8 py-3.5 text-sm sm:text-base font-semibold transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 cursor-pointer"
+                  style={{
+                    background: "var(--marker-blue)",
+                    color: "#fff",
+                    borderColor: "var(--marker-blue)",
+                    fontFamily: "var(--font-body)",
+                    borderRadius: "3px 6px 4px 5px / 5px 3px 6px 4px",
+                  }}
                 >
-                  {status === "sending" ? "Sending..." : "Send message"}
+                  {status === "sending" ? "Sending..." : "Send me an email"}
                 </button>
               </div>
 
+              {/* Form states — all three required by R-27 */}
               {status === "success" && (
                 <div
-                  className="rounded-lg border p-4 text-sm font-medium"
+                  className="sketch-border rounded p-4 text-sm font-medium"
                   style={{
-                    backgroundColor: "rgba(16, 185, 129, 0.08)",
-                    borderColor: "var(--color-success)",
-                    color: "var(--color-success)",
+                    background: "rgba(56, 142, 60, 0.08)",
+                    borderColor: "var(--marker-green)",
+                    color: "var(--marker-green)",
+                    fontFamily: "var(--font-label)",
+                    borderRadius: "3px 7px 5px 4px / 5px 3px 7px 4px",
                   }}
+                  role="status"
                 >
-                  Message sent. I'll get back to you promptly.
+                  Message sent. I'll get back to you soon.
                 </div>
               )}
               {status === "error" && (
-                <div className="rounded-lg bg-[rgba(239,68,68,0.1)] border border-red-500 p-4 text-sm text-red-400 font-medium">
+                <div
+                  className="sketch-border rounded p-4 text-sm font-medium"
+                  style={{
+                    background: "rgba(211, 47, 47, 0.08)",
+                    borderColor: "var(--marker-red)",
+                    color: "var(--marker-red)",
+                    fontFamily: "var(--font-label)",
+                    borderRadius: "3px 7px 5px 4px / 5px 3px 7px 4px",
+                  }}
+                  role="alert"
+                >
                   Something went wrong. Please try again or email me directly.
                 </div>
               )}

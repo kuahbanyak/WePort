@@ -1,139 +1,273 @@
-import { ThreeHeroScene } from "../components/ThreeHeroScene";
+import { useRef, useState } from "react";
+import { ArchitectureNode } from "../components/ArchitectureNode";
+import { StickyNote } from "../components/StickyNote";
+
+const stackNodes: { label: string; color: string }[] = [
+  { label: "React", color: "#1565C0" },
+  { label: "API Gateway", color: "#5a5a5a" },
+  { label: "Go / .NET Core", color: "#388E3C" },
+  { label: "PostgreSQL", color: "#F57C00" },
+  { label: "Docker", color: "#2C2C2C" },
+  { label: "Azure / Cloud", color: "#1565C0" },
+];
+
+const stickyNotes: { text: string; rotate: number }[] = [
+  { text: "Keep it simple.", rotate: -2 },
+  { text: "Production matters.", rotate: 1.5 },
+  { text: "Ship, observe, improve.", rotate: -1 },
+];
+
+// Maximum tilt in degrees per axis.
+// Reason: ±7deg gives a physical feel without looking nauseating at normal pointer speeds.
+const MAX_TILT = 7;
 
 export function Hero() {
+  const boardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Detect whether the user prefers reduced motion.
+  const prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (prefersReduced || !boardRef.current) return;
+    const rect = boardRef.current.getBoundingClientRect();
+    // Normalised position: -1 to +1 relative to the element center.
+    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    // rotateX tilts vertically (mouse up = lean back), rotateY tilts horizontally.
+    setTilt({ x: -ny * MAX_TILT, y: nx * MAX_TILT });
+  }
+
+  function handleMouseLeave() {
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  }
+
+  function handleMouseEnter() {
+    setIsHovered(true);
+  }
+
+  const boardTransform = prefersReduced
+    ? "none"
+    : `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`;
+
   return (
     <section
       id="about"
-      className="relative flex min-h-[92vh] sm:min-h-screen flex-col justify-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-24"
+      className="relative flex min-h-[92vh] sm:min-h-screen flex-col justify-center overflow-hidden px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-28"
     >
-      {/* Two chromatic ambient washes: violet left, cyan right.
-          Purpose: establishes Chromatic Dark identity at hero without covering content. Opacity kept low so text contrast is never threatened. */}
-      <div
-        className="pointer-events-none absolute -left-20 top-[10%] h-[400px] sm:h-[520px] w-[500px] max-w-[60vw] rounded-full"
-        style={{
-          background: "radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(99, 102, 241, 0.06) 50%, transparent 70%)",
-          filter: "blur(70px)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute -right-20 top-[30%] h-[380px] sm:h-[480px] w-[440px] max-w-[55vw] rounded-full"
-        style={{
-          background: "radial-gradient(circle, rgba(6, 182, 212, 0.11) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 70%)",
-          filter: "blur(80px)",
-        }}
-      />
+      <div className="mx-auto w-full max-w-[1700px]">
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-16">
 
-      <div className="relative mx-auto w-full max-w-[1700px] 2xl:max-w-[1920px]">
-        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-14 2xl:gap-16">
-          {/* Left: Bio & introduction */}
-          <div className="lg:col-span-7 xl:col-span-6">
-            {/* Availability indicator: marks a real status, not decorative.
-                Dot color (emerald) signals open status; no pulse, no glow ring. */}
+          {/* ── Left: Bio ──────────────────────────────────── */}
+          <div className="lg:col-span-6 xl:col-span-6">
+
+            {/* Open-to-work: real employment status, not decorative. No glow, no pulse. */}
             <div
-              className="fade-up mb-6 sm:mb-8 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full px-4 py-1.5"
+              className="fade-up mb-6 inline-flex items-center gap-2 px-3 py-1.5 sketch-border text-sm"
               style={{
-                backgroundColor: "var(--color-bg-elevated)",
-                border: "1px solid var(--color-border-bright)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.75rem",
+                fontFamily: "var(--font-label)",
+                color: "var(--text-ink-secondary)",
+                borderColor: "var(--marker-green)",
               }}
+              aria-label="Open to backend roles"
             >
               <span
                 className="h-2 w-2 rounded-full shrink-0"
-                style={{ backgroundColor: "var(--color-emerald)" }}
-                aria-label="Open to work"
+                style={{ background: "var(--marker-green)" }}
+                aria-hidden="true"
               />
-              <span style={{ color: "var(--color-text-secondary)" }}>Open to backend roles</span>
+              Open to backend roles
             </div>
 
-            <h1
-              className="fade-up text-4xl xs:text-5xl sm:text-6xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold leading-[1.08] tracking-tight"
-              style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)", animationDelay: "0.08s" }}
+            {/* Small handwritten label per DESIGN.md */}
+            <p
+              className="fade-up mb-3 text-base tracking-wide uppercase"
+              style={{
+                fontFamily: "var(--font-handwritten)",
+                color: "var(--text-ink-secondary)",
+                animationDelay: "0.05s",
+              }}
             >
-              Muhammad Alwi Aziz
+              Software engineer · Builder
+            </p>
+
+            <h1
+              className="fade-up text-5xl xs:text-6xl sm:text-7xl xl:text-8xl leading-[1.08] tracking-tight"
+              style={{
+                fontFamily: "var(--font-handwritten)",
+                color: "var(--text-ink)",
+                animationDelay: "0.1s",
+              }}
+            >
+              Turning{" "}
+              <span
+                className="marker-blue"
+                style={{
+                  textDecoration: "underline",
+                  textDecorationColor: "var(--marker-blue)",
+                  textUnderlineOffset: "5px",
+                  textDecorationThickness: "2.5px",
+                }}
+              >
+                ideas
+              </span>{" "}
+              into{" "}
+              <span className="marker-green">working systems.</span>
             </h1>
 
             <p
-              className="fade-up mt-4 sm:mt-5 text-lg xs:text-xl sm:text-2xl lg:text-2xl xl:text-3xl font-medium"
+              className="fade-up mt-6 max-w-xl text-lg sm:text-xl leading-relaxed"
               style={{
-                fontFamily: "var(--font-display)",
-                color: "var(--color-accent-bright)",
-                animationDelay: "0.16s",
+                fontFamily: "var(--font-body)",
+                color: "var(--text-ink-secondary)",
+                animationDelay: "0.18s",
               }}
             >
-              Backend Engineer (.NET Core &amp; Go)
-            </p>
-
-            <p
-              className="fade-up mt-5 sm:mt-6 max-w-2xl text-base sm:text-lg xl:text-xl leading-relaxed"
-              style={{ color: "var(--color-text-secondary)", animationDelay: "0.24s" }}
-            >
-              I design and build scalable microservices and REST APIs from
-              schema to deployment. Currently architecting backend systems at
-              PT United Tractors, with a focus on clean service
-              boundaries, resilient databases, and dependable infrastructure.
+              Software engineer focused on building reliable products, clean
+              architecture, and practical digital experiences. Currently
+              architecting backend systems at PT United Tractors.
             </p>
 
             <div
-              className="fade-up mt-8 sm:mt-10 flex flex-wrap gap-3 sm:gap-4"
-              style={{ animationDelay: "0.32s" }}
+              className="fade-up mt-8 flex flex-wrap gap-3"
+              style={{ animationDelay: "0.26s" }}
             >
-              <a
-                href="#contact"
-                className="flex items-center justify-center rounded-lg px-6 py-3 sm:px-7 sm:py-3.5 text-sm sm:text-base font-semibold transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-0"
-                style={{ backgroundColor: "var(--color-accent-solid)", color: "#fff" }}
-              >
-                Contact me
-              </a>
+              {/* CTAs: specific text, not generic. No arrow on secondary button. */}
               <a
                 href="#projects"
-                className="hover-accent flex items-center justify-center rounded-lg px-6 py-3 sm:px-7 sm:py-3.5 text-sm sm:text-base font-medium transition-all hover:-translate-y-0.5 active:translate-y-0"
+                className="sketch-border px-7 py-3.5 text-base font-semibold transition-all hover:-translate-y-0.5 hover:shadow-sm active:translate-y-0"
                 style={{
-                  border: "1px solid var(--color-border-bright)",
-                  color: "var(--color-text-primary)",
-                  backgroundColor: "rgba(17, 23, 38, 0.7)",
+                  background: "var(--marker-blue)",
+                  color: "#fff",
+                  borderColor: "var(--marker-blue)",
+                  fontFamily: "var(--font-body)",
+                  borderRadius: "3px 6px 4px 5px / 5px 3px 6px 4px",
                 }}
               >
-                View projects
+                View my work
+              </a>
+              <a
+                href="#contact"
+                className="sketch-border px-7 py-3.5 text-base font-medium transition-all hover:-translate-y-0.5 active:translate-y-0"
+                style={{
+                  background: "transparent",
+                  color: "var(--text-ink)",
+                  borderColor: "var(--border-sketch)",
+                  fontFamily: "var(--font-body)",
+                }}
+              >
+                Let's talk
               </a>
             </div>
           </div>
 
-          {/* Right: Interactive 3D architecture viewport */}
-          <div className="fade-up lg:col-span-5 xl:col-span-6 w-full" style={{ animationDelay: "0.2s" }}>
+          {/* ── Right: Tiltable whiteboard panel ─────────── */}
+          <div
+            className="fade-up lg:col-span-6 xl:col-span-6 w-full"
+            style={{ animationDelay: "0.2s" }}
+          >
+            {/*
+              Board tilt container.
+              Purpose: pointer-tracked 3D tilt makes the whiteboard feel like
+              a real physical object the visitor is leaning over, reinforcing
+              the hand-crafted engineering-sketch identity (R-19 written reason).
+              Transition only runs on leave so the follow feels instant while
+              the snap back is smooth.
+            */}
             <div
-              className="group relative overflow-hidden rounded-2xl border transition-all duration-300 hover:border-[var(--color-accent-bright)]"
+              ref={boardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onMouseEnter={handleMouseEnter}
+              className="relative"
               style={{
-                backgroundColor: "rgba(17, 23, 38, 0.75)",
-                borderColor: "var(--color-border-bright)",
-                boxShadow: "0 24px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+                transform: boardTransform,
+                transition: isHovered ? "none" : "transform 0.55s ease-out",
+                transformStyle: "preserve-3d",
+                willChange: "transform",
+                cursor: "default",
               }}
             >
-              {/* Viewport header: signals this is a real 3D scene, not a decoration */}
+              {/* Background sheet 2 (bottom layer — slight 3D depth per DESIGN.md) */}
               <div
-                className="flex items-center justify-between border-b px-4 py-2.5 text-xs"
+                className="absolute inset-0 rounded-md"
                 style={{
-                  borderColor: "var(--color-border)",
-                  backgroundColor: "rgba(9, 13, 22, 0.85)",
-                  fontFamily: "var(--font-mono)",
+                  background: "#F0EDE7",
+                  transform: "rotate(1.5deg) translateY(6px)",
+                  border: "1.5px solid var(--border-light)",
                 }}
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="h-1.5 w-1.5 rounded-full shrink-0"
-                    style={{ backgroundColor: "var(--color-cyan)" }}
-                  />
-                  <span className="text-[11px]" style={{ color: "var(--color-text-secondary)" }}>
-                    Architecture Topology
-                  </span>
-                </div>
-                <span className="text-[10px]" style={{ color: "var(--color-accent-bright)" }}>
-                  3D · Drag to orbit
-                </span>
-              </div>
+                aria-hidden="true"
+              />
+              {/* Background sheet 1 (middle layer) */}
+              <div
+                className="absolute inset-0 rounded-md"
+                style={{
+                  background: "#F5F3EE",
+                  transform: "rotate(-0.5deg) translateY(3px)",
+                  border: "1.5px solid var(--border-light)",
+                }}
+                aria-hidden="true"
+              />
 
-              {/* 3D Scene */}
-              <ThreeHeroScene />
+              {/* Main board */}
+              <div
+                className="relative sketch-border rounded-md p-6 sm:p-8"
+                style={{ background: "var(--bg-board)", minHeight: "380px" }}
+              >
+                {/* Board annotation */}
+                <p
+                  className="annotation mb-5"
+                  style={{ color: "var(--text-ink-secondary)", fontSize: "0.95rem" }}
+                >
+                  How would I build this? ↓
+                </p>
+
+                {/* Architecture diagram: User to Cloud stack */}
+                <div className="flex flex-col items-center gap-0">
+                  <div
+                    className="arch-node mb-0.5 px-5 py-2 font-semibold"
+                    style={{
+                      fontSize: "0.9rem",
+                      borderColor: "var(--marker-blue)",
+                      color: "var(--marker-blue)",
+                      background: "rgba(21,101,192,0.06)",
+                    }}
+                  >
+                    User
+                  </div>
+
+                  {stackNodes.map((node, i) => (
+                    <div key={node.label} className="flex flex-col items-center">
+                      <svg width="2" height="24" viewBox="0 0 2 24" aria-hidden="true">
+                        <line
+                          x1="1" y1="0" x2="1" y2="20"
+                          stroke={i < stackNodes.length - 1 ? "#8a8a8a" : "var(--marker-orange)"}
+                          strokeWidth="1.5"
+                          strokeDasharray="3 2"
+                        />
+                        <polygon
+                          points="1,24 -2.5,17 4.5,17"
+                          fill={i < stackNodes.length - 1 ? "#8a8a8a" : "var(--marker-orange)"}
+                        />
+                      </svg>
+                      <ArchitectureNode label={node.label} color={node.color} large />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Sticky notes */}
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col gap-3">
+                  {stickyNotes.map((note) => (
+                    <StickyNote key={note.text} rotate={note.rotate} className="text-sm max-w-[130px]">
+                      {note.text}
+                    </StickyNote>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,107 +1,155 @@
 import { experience } from "../data/content";
-import { RouteLabel, SectionHeading } from "../components/RouteLabel";
+import { SectionTitle } from "../components/SectionTitle";
+
+const milestoneColors = [
+  "var(--marker-blue)",
+  "var(--marker-green)",
+  "var(--marker-orange)",
+  "var(--marker-red)",
+];
 
 export function Experience() {
   return (
-    <section id="experience" className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28 xl:py-32">
-      <div className="mx-auto w-full max-w-[1700px] 2xl:max-w-[1920px]">
-        <RouteLabel path="/experience" title="Experience" accentColor="var(--color-emerald)" />
-        <SectionHeading>Professional Experience</SectionHeading>
+    <section
+      id="experience"
+      className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 sm:py-20 lg:py-28"
+    >
+      <div className="mx-auto w-full max-w-[1700px]">
+        <SectionTitle annotation="// My journey">
+          Experience.
+        </SectionTitle>
 
         <div className="relative">
-          {/* Vertical timeline line for mobile/tablet */}
+          {/* Vertical timeline line — drawn SVG connector per DESIGN.md.
+              Hidden on lg where the grid layout makes it redundant. */}
           <div
-            className="absolute left-1.5 top-3 bottom-3 w-px lg:hidden"
-            style={{ backgroundColor: "var(--color-border-bright)" }}
+            className="absolute left-3 top-4 bottom-4 w-0 lg:hidden"
             aria-hidden="true"
+            style={{
+              borderLeft: "2px dashed var(--border-light)",
+            }}
           />
 
           <div className="space-y-6 sm:space-y-8">
-            {experience.map((entry, i) => (
-              <div key={i} className="relative pl-7 sm:pl-9 lg:pl-0 group">
-                {/* Mobile timeline dot: filled = current role, hollow = past */}
-                <span
-                  className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full lg:hidden"
-                  style={{
-                    backgroundColor: i === 0 ? "var(--color-emerald)" : "var(--color-bg)",
-                    border: "2px solid var(--color-emerald)",
-                  }}
-                  aria-hidden="true"
-                />
+            {experience.map((entry, i) => {
+              const nodeColor = milestoneColors[i % milestoneColors.length];
+              const isCurrent = i === 0;
 
-                <div
-                  className="grid lg:grid-cols-12 gap-4 lg:gap-8 rounded-2xl border p-5 sm:p-6 lg:p-8 transition-all duration-300 hover:border-[var(--color-emerald)] hover:shadow-xl hover:shadow-emerald-500/5"
-                  style={{
-                    backgroundColor: "var(--color-bg-elevated)",
-                    borderColor: "var(--color-border)",
-                  }}
-                >
-                  {/* Left: metadata */}
-                  <div className="lg:col-span-4 xl:col-span-3 flex flex-col gap-2">
-                    <div className="flex flex-wrap items-center gap-2">
+              return (
+                <div key={i} className="relative pl-9 sm:pl-11 lg:pl-0 group">
+                  {/* Mobile timeline node: filled = current, hollow = past */}
+                  <span
+                    className="absolute left-0 top-2 h-6 w-6 rounded-full border-2 flex items-center justify-center lg:hidden"
+                    style={{
+                      background: isCurrent ? nodeColor : "var(--bg-board)",
+                      borderColor: nodeColor,
+                    }}
+                    aria-hidden="true"
+                  >
+                    {isCurrent && (
                       <span
-                        className="rounded px-2.5 py-1 text-xs font-semibold"
+                        className="h-2 w-2 rounded-full"
+                        style={{ background: "#fff" }}
+                      />
+                    )}
+                  </span>
+
+                  {/* Experience card: sketch-border for hand-drawn feel */}
+                  <div
+                    className="sketch-card group-hover:shadow-lg p-5 sm:p-6 lg:p-8 grid lg:grid-cols-12 gap-4 lg:gap-8"
+                    style={{ transform: `rotate(${i % 2 === 0 ? -0.3 : 0.25}deg)` }}
+                  >
+                    {/* Left: metadata */}
+                    <div className="lg:col-span-4 xl:col-span-3 flex flex-col gap-2">
+                      {/* Duration tag — real dates from data */}
+                      <span
+                        className="sketch-border inline-flex self-start px-2.5 py-0.5 text-xs font-medium"
                         style={{
-                          fontFamily: "var(--font-mono)",
-                          backgroundColor: i === 0 ? "rgba(16, 185, 129, 0.15)" : "rgba(29, 35, 46, 0.6)",
-                          color: i === 0 ? "var(--color-emerald)" : "var(--color-text-secondary)",
-                          border: `1px solid ${i === 0 ? "rgba(16, 185, 129, 0.35)" : "var(--color-border-bright)"}`,
+                          fontFamily: "var(--font-label)",
+                          color: isCurrent ? nodeColor : "var(--text-ink-secondary)",
+                          borderColor: isCurrent ? nodeColor : "var(--border-light)",
+                          background: isCurrent ? `${nodeColor}12` : "transparent",
+                          borderRadius: "2px 5px 3px 4px / 4px 2px 5px 3px",
                         }}
                       >
                         {entry.duration}
                       </span>
-                      {/* "Active" dot: marks a real employment state. No glow, no pulse. */}
-                      {i === 0 && (
-                        <span className="flex items-center gap-1.5 text-xs font-mono" style={{ color: "var(--color-emerald)" }}>
+
+                      {/* Active indicator: marks real employment state.
+                          No glow, no pulse — just a plain dot and label. */}
+                      {isCurrent && (
+                        <span
+                          className="flex items-center gap-1.5 text-xs"
+                          style={{ fontFamily: "var(--font-label)", color: nodeColor }}
+                        >
                           <span
                             className="h-1.5 w-1.5 rounded-full shrink-0"
-                            style={{ backgroundColor: "var(--color-emerald)" }}
+                            style={{ background: nodeColor }}
                             aria-label="Active role"
+                            aria-hidden="true"
                           />
                           Active
                         </span>
                       )}
+
+                      <h3
+                        className="text-base sm:text-lg font-bold leading-tight mt-1"
+                        style={{ fontFamily: "var(--font-handwritten)", color: "var(--text-ink)" }}
+                      >
+                        {entry.role}
+                      </h3>
+
+                      <p
+                        className="text-sm font-semibold"
+                        style={{ fontFamily: "var(--font-label)", color: nodeColor }}
+                      >
+                        {entry.company}
+                      </p>
+
+                      <p
+                        className="text-xs"
+                        style={{ fontFamily: "var(--font-body)", color: "var(--text-ink-tertiary)" }}
+                      >
+                        {entry.location}
+                      </p>
                     </div>
 
-                    <h3
-                      className="text-lg sm:text-xl font-bold tracking-tight"
-                      style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}
+                    {/* Right: bullets */}
+                    <div
+                      className="lg:col-span-8 xl:col-span-9 border-t border-dashed lg:border-t-0 lg:border-l lg:pl-8 pt-4 lg:pt-0"
+                      style={{ borderColor: "var(--border-light)" }}
                     >
-                      {entry.role}
-                    </h3>
-
-                    <p className="text-sm font-semibold" style={{ color: "var(--color-emerald)" }}>
-                      {entry.company}
-                    </p>
-
-                    <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                      {entry.location}
-                    </p>
-                  </div>
-
-                  {/* Right: bullets */}
-                  <div className="lg:col-span-8 xl:col-span-9 border-t border-[var(--color-border)] pt-4 lg:border-t-0 lg:border-l lg:border-[var(--color-border)] lg:pt-0 lg:pl-8">
-                    <ul className="space-y-2.5">
-                      {entry.bullets.map((bullet, j) => (
-                        <li
-                          key={j}
-                          className="flex items-start gap-3 text-sm sm:text-base leading-relaxed"
-                          style={{ color: "var(--color-text-secondary)" }}
-                        >
-                          <span
-                            className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                            style={{ backgroundColor: "var(--color-emerald)" }}
-                            aria-hidden="true"
-                          />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
+                      <ul className="space-y-2.5">
+                        {entry.bullets.map((bullet, j) => (
+                          <li
+                            key={j}
+                            className="flex items-start gap-3 text-base sm:text-lg leading-relaxed"
+                            style={{ fontFamily: "var(--font-body)", color: "var(--text-ink-secondary)" }}
+                          >
+                            {/* Marker dot: signals list item in whiteboard vocabulary */}
+                            <span
+                              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                              style={{ background: nodeColor }}
+                              aria-hidden="true"
+                            />
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+
+          {/* DESIGN.md annotation: "Still building..." */}
+          <p
+            className="annotation mt-6 pl-1"
+            style={{ color: "var(--text-ink-tertiary)", fontSize: "0.9rem" }}
+          >
+            Still building...
+          </p>
         </div>
       </div>
     </section>

@@ -1,33 +1,49 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────
+   Design tokens — Whiteboard / Marker palette
+   from DESIGN.md
+───────────────────────────────────────────── */
 @theme {
-  --color-bg: #090d16;
-  --color-bg-elevated: #111726;
-  --color-bg-elevated-hover: #171f34;
-  --color-accent: #8b5cf6;
-  --color-accent-solid: #7c3aed;
-  --color-accent-bright: #a78bfa;
-  --color-accent-dim: #2e1065;
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #94a3b8;
-  --color-text-tertiary: #8492a6;
-  --color-success: #10b981;
-  --color-border: #1e293b;
-  --color-border-bright: #334155;
+  /* Core whiteboard surface */
+  --bg-board: #FEFEFE;
+  --bg-board-tinted: #F9F9F5;
 
-  /* Chromatic section & category tokens */
-  --color-amber: #f59e0b;
-  --color-cyan: #06b6d4;
-  --color-emerald: #10b981;
-  --color-sky: #38bdf8;
-  --color-rose: #f43f5e;
-  --color-coral: #fb923c;
+  /* Marker ink colors — the brand palette */
+  --marker-black: #2C2C2C;
+  --marker-blue: #1565C0;
+  --marker-red: #D32F2F;
+  --marker-green: #388E3C;
+  --marker-orange: #F57C00;
 
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  /* Sticky note */
+  --sticky-bg: #FFF9C4;
+  --sticky-shadow: rgba(0, 0, 0, 0.13);
+
+  /* Ink surface tints */
+  --marker-blue-tint: rgba(21, 101, 192, 0.1);
+  --marker-green-tint: rgba(56, 142, 60, 0.1);
+  --marker-orange-tint: rgba(245, 124, 0, 0.1);
+  --marker-red-tint: rgba(211, 47, 47, 0.1);
+
+  /* Text */
+  --text-ink: #2C2C2C;
+  --text-ink-secondary: #5a5a5a;
+  --text-ink-tertiary: #8a8a8a;
+
+  /* Borders */
+  --border-sketch: #2C2C2C;
+  --border-light: #D1CBC0;
+
+  /* Fonts */
+  --font-handwritten: "Architects Daughter", cursive;
+  --font-label: "Patrick Hand", cursive;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
+/* ─────────────────────────────────────────────
+   Reduced motion
+───────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -46,82 +62,205 @@ html {
   overflow-x: hidden;
 }
 
+/* ─────────────────────────────────────────────
+   Body — whiteboard surface with dot grid.
+   Dot grid reason: supports the engineering-sketch
+   identity defined in DESIGN.md; marks the page
+   as a whiteboard, not a dark app shell.
+───────────────────────────────────────────── */
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
+  background-color: var(--bg-board);
+  background-image: radial-gradient(
+    circle,
+    rgba(44, 44, 44, 0.12) 1px,
+    transparent 1.2px
+  );
+  background-size: 22px 22px;
+  color: var(--text-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   width: 100%;
 }
 
-/* Prevent auto-zoom on iOS when tapping inputs */
-@media (max-width: 640px) {
-  input, textarea, select {
-    font-size: 16px !important;
-  }
-}
-
+/* ─────────────────────────────────────────────
+   Text selections
+───────────────────────────────────────────── */
 ::selection {
-  background-color: var(--color-accent-dim);
-  color: var(--color-text-primary);
+  background-color: rgba(21, 101, 192, 0.2);
+  color: var(--text-ink);
 }
 
+/* ─────────────────────────────────────────────
+   Focus ring — visible, not default browser ring
+───────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--color-accent-bright);
+  outline: 2.5px solid var(--marker-blue);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-/* subtle scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-bg);
-}
+/* ─────────────────────────────────────────────
+   Scrollbar — subtle to match paper feel
+───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-board); }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border-bright);
+  background: var(--border-light);
   border-radius: 8px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-tertiary);
+::-webkit-scrollbar-thumb:hover { background: #b0aaa0; }
+
+/* ─────────────────────────────────────────────
+   Whiteboard visual vocabulary
+   Reason for each class documented inline.
+───────────────────────────────────────────── */
+
+/* Sketch card — represents a hand-drawn card.
+   Border, radius variation, and paper shadow
+   give the drawn-on-paper effect. Small rotation
+   applied per-card in JSX for visual irregularity. */
+.sketch-card {
+  border: 2px solid var(--border-sketch);
+  border-radius: 4px 8px 6px 5px / 6px 4px 8px 5px;
+  background: var(--bg-board);
+  box-shadow: 3px 4px 0 rgba(44, 44, 44, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* route-style section divider, used as a structural device */
-.route-label {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
-  color: var(--color-accent-bright);
+.sketch-card:hover {
+  transform: translateY(-5px) rotate(0deg) !important;
+  box-shadow: 5px 8px 0 rgba(44, 44, 44, 0.18);
 }
 
-.route-label::before {
-  content: "// ";
-  color: var(--color-text-tertiary);
+/* Sticky note — yellow post-it, per DESIGN.md */
+.sticky-note {
+  background: var(--sticky-bg);
+  border-radius: 2px 8px 6px 4px / 6px 2px 8px 5px;
+  box-shadow: 2px 4px 8px var(--sticky-shadow), 1px 2px 0 rgba(0,0,0,0.06);
+  padding: 1rem 1.1rem;
+  font-family: var(--font-label);
+  color: var(--text-ink);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sticky-note:hover {
+  transform: rotate(0deg) !important;
+  box-shadow: 3px 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* Sketch border — simple rough border without card structure */
+.sketch-border {
+  border: 2px solid var(--border-sketch);
+  border-radius: 3px 7px 5px 4px / 5px 3px 7px 4px;
+}
+
+/* Marker text colors */
+.marker-blue  { color: var(--marker-blue); }
+.marker-red   { color: var(--marker-red); }
+.marker-green { color: var(--marker-green); }
+.marker-orange { color: var(--marker-orange); }
+
+/* Marker underline — colored squiggly underline accent.
+   Used sparingly on key words to signal importance,
+   matching the highlighter vocabulary of whiteboard diagrams. */
+.marker-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--marker-blue);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+/* Connector line — drawn SVG-style separator */
+.connector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-ink-tertiary);
+  font-family: var(--font-label);
+  font-size: 0.875rem;
+}
+
+.connector::before,
+.connector::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  border-top: 1.5px dashed var(--border-light);
+}
+
+/* Section annotation style — small handwritten label */
+.annotation {
+  font-family: var(--font-handwritten);
+  font-size: 0.875rem;
+  color: var(--text-ink-secondary);
+  font-style: normal;
+}
+
+/* ─────────────────────────────────────────────
+   Nav underline animation — marker draw effect.
+   Purpose: signals navigation state with a
+   deliberate marker-stroke gesture.
+───────────────────────────────────────────── */
+.nav-link {
+  position: relative;
+  font-family: var(--font-body);
+  color: var(--text-ink-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--marker-blue);
+  border-radius: 1px;
+  transition: width 0.2s ease;
 }
 
 .nav-link:hover {
-  color: var(--color-text-primary) !important;
+  color: var(--text-ink);
 }
 
-.hover-accent {
-  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
-}
-.hover-accent:hover {
-  color: var(--color-accent-bright) !important;
-  border-color: var(--color-accent) !important;
+.nav-link:hover::after {
+  width: 100%;
 }
 
-.status-dot {
-  display: inline-block;
-  flex-shrink: 0;
-}
-
+/* ─────────────────────────────────────────────
+   Reveal animation — intersection observer fade-up.
+   MOTION 2: scroll-reveal is the primary motion system.
+───────────────────────────────────────────── */
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
 .fade-up {
-  animation: fade-up 0.6s ease-out both;
+  animation: fade-up 0.5s ease-out both;
+}
+
+/* Architecture node box — drawn box in the hero diagram */
+.arch-node {
+  border: 2px solid var(--border-sketch);
+  border-radius: 3px 6px 4px 5px / 5px 3px 6px 4px;
+  background: var(--bg-board);
+  padding: 0.45rem 1rem;
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  color: var(--text-ink);
+  text-align: center;
+  box-shadow: 2px 2px 0 rgba(44, 44, 44, 0.1);
+  white-space: nowrap;
+}
+
+/* iOS auto-zoom prevention on inputs */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
 }

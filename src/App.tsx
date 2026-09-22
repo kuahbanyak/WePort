@@ -8,7 +8,7 @@ import { Contact } from "./sections/Contact";
 
 function App() {
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text-primary)]">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Nav />
       <main className="w-full overflow-x-hidden">
         <Hero />
